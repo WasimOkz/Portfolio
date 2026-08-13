@@ -1,14 +1,4 @@
-        /* Footer */
-        .footer {
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
-            color: white;
-            padding: 3rem 0 1rem;
-            border-top: 1px solid var(--border-color);
-            position: relative;
-        }
-
-        .footer::before {
-            <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -174,6 +164,18 @@
             transition: 0.3s;
         }
 
+        .mobile-menu.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .mobile-menu.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
         /* Hero Section */
         .hero {
             min-height: 100vh;
@@ -245,8 +247,48 @@
         .hero-content .subtitle {
             font-size: 1.5rem;
             color: var(--text-secondary);
-            margin-bottom: 2rem;
+            margin-bottom: 0.75rem;
             text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+        }
+
+        .hero-tagline {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            max-width: 560px;
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .hero-tagline strong {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin: 2rem 0 2.5rem;
+        }
+
+        .hero-stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero-stat .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d4ff 0%, #4ecdc4 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-stat .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.2rem;
         }
 
         .hero-buttons {
@@ -778,6 +820,13 @@
             font-weight: 500;
         }
 
+        .education-coursework {
+            color: var(--text-secondary);
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
         /* Contact Section */
         .contact-content {
             display: grid;
@@ -885,9 +934,10 @@
 
         /* Footer */
         .footer {
-            background: var(--text-primary);
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
             color: white;
-            padding: 3rem 0 1rem;
+            padding: 3rem 0 1.5rem;
+            border-top: 1px solid var(--border-color);
         }
 
         .footer-content {
@@ -895,10 +945,43 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
             margin-bottom: 2rem;
+            align-items: start;
         }
 
         .footer-section h3 {
             margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .footer-tagline {
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 320px;
+            line-height: 1.7;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        .footer-socials a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.06);
+            color: white;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .footer-socials a:hover {
+            background: var(--primary-color);
+            color: #0a0a0a;
+            transform: translateY(-3px);
         }
 
         .footer-links {
@@ -961,6 +1044,20 @@
         @media (max-width: 768px) {
             .nav-menu {
                 display: none;
+            }
+
+            .nav-menu.active {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: var(--bg-primary);
+                border-bottom: 1px solid var(--border-color);
+                padding: 1rem 2rem 1.5rem;
+                gap: 1.2rem;
+                box-shadow: var(--shadow-lg);
             }
 
             .mobile-menu {
@@ -1135,18 +1232,19 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo">MW</div>
-            <ul class="nav-menu">
+            <ul class="nav-menu" id="navMenu">
                 <li><a href="#home" class="nav-link">Home</a></li>
                 <li><a href="#about" class="nav-link">About</a></li>
                 <li><a href="#experience" class="nav-link">Experience</a></li>
                 <li><a href="#projects" class="nav-link">Projects</a></li>
                 <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#education" class="nav-link">Education</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
             <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()">
                 <i id="themeIcon" class="fas fa-moon"></i>
             </button>
-            <div class="mobile-menu">
+            <div class="mobile-menu" id="mobileMenuBtn" onclick="toggleMobileMenu()">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -1159,15 +1257,30 @@
         <div class="hero-container">
             <div class="hero-content">
                 <h1>MUHAMMAD WASIM</h1>
-                <p class="subtitle">AI Engineer</p>
+                <p class="subtitle">AI Engineer — Speech, LLMs & Multi-Agent Systems</p>
+                <p class="hero-tagline">I build AI that ships: from <strong>offline ASR for fighter jets</strong> to <strong>multi-agent LLM platforms</strong> running in production. I care about pipelines that work outside a notebook — fast, resource-efficient, and reliable in the real world.</p>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <span class="stat-number">0.02</span>
+                        <span class="stat-label">WER on merged voice commands</span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="stat-number">99.8%</span>
+                        <span class="stat-label">Transcription accuracy achieved</span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="stat-number">4+</span>
+                        <span class="stat-label">AI systems shipped end-to-end</span>
+                    </div>
+                </div>
                 <div class="hero-buttons">
-                    <a href="https://drive.google.com/file/d/1myTJoYaAKBp8d6sdVxaXEB54I5dAX9Rh/view?usp=sharing" class="btn btn-primary" target="_blank" rel="noopener">
+                    <a href="https://drive.google.com/file/d/1OBHtQPz4S-H3Hjq5ZjlJwtg6KSg1qkkO/view?usp=sharing" class="btn btn-primary" target="_blank" rel="noopener">
                         <i class="fas fa-download"></i>
                         Download Resume
                     </a>
                     <button class="btn btn-outline" type="button" onclick="openContactModal()">
                         <i class="fas fa-envelope"></i>
-                        Contact Me
+                        Let's Talk
                     </button>
                 </div>
             </div>
@@ -1182,11 +1295,11 @@
         <div class="container">
             <h2 class="section-title">About Me</h2>
             <div class="about-content" style="display:block;">
-                <div class="about-text" style="width:100%;"><p style="text-align:justify;">As an AI Engineer with hands-on experience in real-time speech recognition, large language models, and multi-agent AI platforms, I thrive at the intersection of deep learning and scalable, resource-efficient solutions. My work at the National Aerospace Science & Technology Park (NASTP), NUST and through projects on Upwork has given me unique insight into developing offline ASR systems for avionics, building multi-agent platforms for complex document analysis, and deploying RAG-based recommendation engines.
-
-I'm passionate about bridging the gap between cutting-edge AI research and practical, real-world applications especially in domains where reliability, efficiency, and innovation are paramount. My background in mathematics and data science enables me to tackle projects from both a theoretical and applied perspective, with a strong focus on dataset engineering, model optimization, and the creation of robust AI pipelines.
-
-Let's connect if you're interested in leveraging advanced AI for impactful solutions, or if you'd like to discuss opportunities in applied research, product development, or collaborative projects.</p></div>
+                <div class="about-text" style="width:100%;">
+                    <p style="text-align:justify;"><strong style="color:var(--primary-color);">I like AI that has to work under pressure.</strong> At the National Aerospace Science & Technology Park (NASTP), that meant building an offline speech-recognition system for fighter jet cockpits — no cloud, no second chances, just clean transcription in real time. Since then I've carried that same "make it actually work" mindset into large language models and multi-agent systems: platforms that validate planning applications, rewrite resumes for ATS, and recommend stock decisions from live market events.</p>
+                    <p style="text-align:justify; margin-top:1.2rem;">My background is mathematics and data science, so I'm as comfortable in the theory as I am in the deployment weeds — dataset engineering, model optimization, and gluing it all together into pipelines that don't fall over. What I want next is a team building AI products people actually rely on.</p>
+                    <p style="text-align:justify; margin-top:1.2rem;">If that sounds like your team, <a href="#contact" style="color:var(--primary-color); font-weight:600;">let's talk</a>.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -1199,17 +1312,18 @@ Let's connect if you're interested in leveraging advanced AI for impactful solut
                 <div class="experience-card">
                     <div class="experience-header">
                         <div>
-                            <h3 class="experience-title">AI Application Developer</h3>
-                            <p class="experience-company">Kele-AI | Remote</p>
+                            <h3 class="experience-title">AI Engineer</h3>
+                            <p class="experience-company">Kele-AI | Remote (Contract)</p>
                         </div>
-                        <span class="experience-time">Jun 2025 – Present</span>
+                        <span class="experience-time">Jun 2025 – May 2026</span>
                     </div>
                     <div class="experience-description">
                         <ul>
-                            <li>Developed "UK Land Planning Analyzer," a multi-agent AI system that automates planning application validation and risk assessment for UK councils using LLMs, Streamlit dashboards, and FastAPI endpoints.</li>
-                            <li>Engineered agentic workflows for semantic document validation, integrating document chunking, risk analysis, and a simulated senior consultant agent to ensure compliance with statutory and local planning checklists.</li>
-                            <li>Built "CV Curator," an intelligent multi-agent application that parses job descriptions and dynamically updates candidate resumes for optimal ATS and recruiter alignment.</li>
-                            <li>Implemented specialized agents Comparator, Updater, and Reviewer to enable intelligent CV analysis and revision, improving relevance to job requirements.</li>
+                            <li>Engineered "UK Land Planning Analyzer," a multi-agent AI system that automates review of UK planning applications using 5 specialized LLM agents for document analysis, compliance checking, and risk scoring, exposed through a FastAPI backend.</li>
+                            <li>Developed web scrapers for 3 UK council portals to automatically extract and process planning documents (PDF/DOCX), leveraging parallel processing for faster turnaround.</li>
+                            <li>Designed a rule-verification layer that cross-checks AI-generated compliance results against 55 official planning rules, producing a trust score to catch errors before reaching the user.</li>
+                            <li>Implemented safeguards against AI hallucination, including quote verification and automatic fallback logic, ensuring reliable output even when the underlying model fails.</li>
+                            <li>Delivered the system across two interfaces (standalone Streamlit app and FastAPI-backed dashboard) with an 11-tab UI presenting risk, compliance, and constraint insights.</li>
                         </ul>
                     </div>
                 </div>
@@ -1235,32 +1349,16 @@ Let's connect if you're interested in leveraging advanced AI for impactful solut
                 <div class="experience-card">
                     <div class="experience-header">
                         <div>
-                            <h3 class="experience-title">Advanced AI Training on Large Language Models</h3>
+                            <h3 class="experience-title">AI Trainee (LLMs)</h3>
                             <p class="experience-company">NUST – Skylabs AI | Islamabad, Pakistan</p>
                         </div>
                         <span class="experience-time">Jul 2024 – Aug 2024</span>
                     </div>
                     <div class="experience-description">
                         <ul>
-                            <li>Engineered in generative AI and fine-tuning large language models, improving model accuracy and efficiency.</li>
-                            <li>Deployed advanced NLP techniques to develop AI solutions tailored to real-world challenges.</li>
-                            <li>Collaborated with teams to integrate AI solutions, enhancing project outcomes and innovation.</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="experience-card">
-                    <div class="experience-header">
-                        <div>
-                            <h3 class="experience-title">Data Science Fellowship</h3>
-                            <p class="experience-company">Bytewise Limited | Remote</p>
-                        </div>
-                        <span class="experience-time">Mar 2023 – May 2023</span>
-                    </div>
-                    <div class="experience-description">
-                        <ul>
-                            <li>Constructed machine learning models to solve business problems, focusing on accuracy and scalability.</li>
-                            <li>Performed comprehensive data analysis and visualization, driving data-driven decisions.</li>
-                            <li>Implemented Python-based solutions to streamline processes and enhance performance.</li>
+                            <li>Completed an intensive training program covering the full LLM pipeline, including Transformer architectures, pretraining fundamentals, fine-tuning strategies, and deployment workflows.</li>
+                            <li>Gained hands-on exposure to modern LLM techniques such as Retrieval-Augmented Generation (RAG), prompt engineering, parameter-efficient fine-tuning (LoRA), and model optimization methods including quantization for efficient inference.</li>
+                            <li>Explored Mixture of Experts (MoE) architectures and the trade-offs between model scaling, computational cost, and inference efficiency.</li>
                         </ul>
                     </div>
                 </div>
@@ -1340,96 +1438,114 @@ Let's connect if you're interested in leveraging advanced AI for impactful solut
             <div class="skills-grid">
                 <div class="skill-category">
                     <div class="skill-icon"><i class="fas fa-network-wired"></i></div>
-                    <div class="skill-title">Agentic AI & Multi-Agent Systems</div>
+                    <div class="skill-title">LLMs & Agents</div>
                     <ul class="skill-list">
-                        <li>LangChain frameworks</li>
-                        <li>Multi-agent orchestration</li>
-                        <li>Semantic document processing</li>
-                        <li>Skilled prompt engineering</li>
+                        <li>LLM fine-tuning</li>
+                        <li>Multi-agent system design</li>
+                        <li>RAG pipelines</li>
+                        <li>Prompt engineering</li>
+                        <li>Agentic workflow orchestration</li>
+                        <li>LangGraph</li>
                     </ul>
                 </div>
                 <div class="skill-category">
                     <div class="skill-icon"><i class="fas fa-microphone"></i></div>
-                    <div class="skill-title">Automatic Speech Recognition (ASR)</div>
+                    <div class="skill-title">Automatic Speech Recognition</div>
                     <ul class="skill-list">
-                        <li>Fine-tuning ASR models for domain-specific tasks</li>
-                        <li>Speaker diarization (identifying and segmenting speakers in audio)</li>
-                        <li>Wake-word detection for real-time applications</li>
-                    </ul>
-                </div>
-                <div class="skill-category">
-                    <div class="skill-icon"><i class="fas fa-brain"></i></div>
-                    <div class="skill-title">Deep Learning & AI</div>
-                    <ul class="skill-list">
-                        <li>Frameworks: PyTorch, TensorFlow, Keras</li>
-                        <li>Convolutional Neural Networks (CNNs) for image and audio tasks</li>
-                        <li>Sequence models: RNNs, LSTMs, GRUs for time-series and NLP</li>
-                        <li>Natural Language Processing (NLP) techniques</li>
-                    </ul>
-                </div>
-                <div class="skill-category">
-                    <div class="skill-icon"><i class="fas fa-language"></i></div>
-                    <div class="skill-title">LLMs & RAGs</div>
-                    <ul class="skill-list">
-                        <li>LLM fine-tuning and prompt engineering</li>
-                        <li>Building and deploying Retrieval-Augmented Generation (RAG) pipelines</li>
-                        <li>LangChain, Hugging Face Transformers</li>
-                        <li>Real-world LLM/RAG application deployment</li>
-                    </ul>
-                </div>
-                <div class="skill-category">
-                    <div class="skill-icon"><i class="fas fa-robot"></i></div>
-                    <div class="skill-title">Machine Learning & Data Processing</div>
-                    <ul class="skill-list">
-                        <li>Libraries: Scikit-learn, Pandas, NumPy</li>
-                        <li>Feature engineering and data wrangling</li>
-                        <li>Building and evaluating ML models</li>
-                        <li>Problem-solving for real-world data challenges</li>
+                        <li>Wav2Vec 2.0, Whisper</li>
+                        <li>Speaker diarization</li>
+                        <li>Wake-word detection</li>
+                        <li>Offline / on-device ASR deployment</li>
                     </ul>
                 </div>
                 <div class="skill-category">
                     <div class="skill-icon"><i class="fas fa-volume-up"></i></div>
-                    <div class="skill-title">Audio Processing & Augmentation</div>
+                    <div class="skill-title">Audio Processing</div>
                     <ul class="skill-list">
-                        <li>Tools: Audacity, Librosa, Pydub</li>
-                        <li>Synthetic speech generation and augmentation</li>
-                        <li>Audio feature extraction and transformation</li>
+                        <li>Librosa, Pydub, Audacity</li>
+                        <li>Synthetic speech generation</li>
+                        <li>Data augmentation</li>
                     </ul>
                 </div>
                 <div class="skill-category">
-                    <div class="skill-icon"><i class="fas fa-chart-bar"></i></div>
-                    <div class="skill-title">Data Visualization</div>
+                    <div class="skill-icon"><i class="fas fa-brain"></i></div>
+                    <div class="skill-title">Machine Learning & NLP</div>
                     <ul class="skill-list">
-                        <li>Matplotlib, Seaborn for insightful visualizations</li>
-                        <li>Presenting complex data in clear, actionable formats</li>
+                        <li>PyTorch, TensorFlow, Keras</li>
+                        <li>Scikit-learn, Hugging Face Transformers</li>
+                        <li>NLP techniques</li>
+                        <li>Feature engineering</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <div class="skill-icon"><i class="fas fa-file-alt"></i></div>
+                    <div class="skill-title">Data & Document Processing</div>
+                    <ul class="skill-list">
+                        <li>OCR (Tesseract)</li>
+                        <li>PDF/image pipelines</li>
+                        <li>Pandas, NumPy</li>
+                        <li>Hybrid text extraction</li>
                     </ul>
                 </div>
                 <div class="skill-category">
                     <div class="skill-icon"><i class="fas fa-code"></i></div>
-                    <div class="skill-title">Programming</div>
+                    <div class="skill-title">Programming & Tools</div>
                     <ul class="skill-list">
-                        <li>Python (primary language for AI, ML, and data projects)</li>
+                        <li>Python</li>
+                        <li>FastAPI, Streamlit</li>
+                        <li>Docker</li>
+                        <li>Git</li>
                     </ul>
                 </div>
                 <div class="skill-category">
-                    <div class="skill-icon"><i class="fas fa-server"></i></div>
-                    <div class="skill-title">Backend & API Development</div>
+                    <div class="skill-icon"><i class="fas fa-chart-bar"></i></div>
+                    <div class="skill-title">Visualization</div>
                     <ul class="skill-list">
-                        <li>FastAPI with vibe coding approach</li>
-                        <li>Docker containerization</li>
-                        <li>Web scraping and data ingestion</li>
-                    </ul>
-                </div>
-                <div class="skill-category">
-                    <div class="skill-icon"><i class="fas fa-desktop"></i></div>
-                    <div class="skill-title">Frontend & UI</div>
-                    <ul class="skill-list">
-                        <li>Streamlit dashboards with vibe coding</li>
-                        <li>CustomTkinter applications</li>
-                        <li>Responsive web interfaces</li>
+                        <li>Matplotlib, Seaborn</li>
                     </ul>
                 </div>
 
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="section">
+        <div class="container">
+            <h2 class="section-title">Education</h2>
+            <div class="education-card">
+                <div class="education-degree">BS Mathematics (Data Science)</div>
+                <div class="education-school">Namal University, Punjab, Pakistan</div>
+                <div class="education-time">2020 – 2024</div>
+                <span class="achievement"><i class="fas fa-award"></i>&nbsp; 100% Undergraduate Merit Scholarship</span>
+                <div class="education-coursework"><strong>Relevant coursework:</strong> Introduction to Programming (Python), Data Analysis &amp; Visualization, Machine Learning, Inferential Statistics</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certifications Section -->
+    <section id="certifications" class="section">
+        <div class="container">
+            <h2 class="section-title">Certifications</h2>
+            <div class="cert-grid">
+                <div class="cert-card">
+                    <div class="cert-icon"><i class="fas fa-certificate"></i></div>
+                    <div class="cert-title">Scientific Computing and Python</div>
+                    <div class="cert-issuer">WorldQuant University</div>
+                    <div class="education-time" style="margin-top:0.4rem;">Sep 2021 – Dec 2021</div>
+                </div>
+                <div class="cert-card">
+                    <div class="cert-icon"><i class="fas fa-certificate"></i></div>
+                    <div class="cert-title">Fundamentals of Data Science</div>
+                    <div class="cert-issuer">Corporate Finance Institute</div>
+                    <div class="education-time" style="margin-top:0.4rem;">Sep 2021</div>
+                </div>
+                <div class="cert-card">
+                    <div class="cert-icon"><i class="fas fa-certificate"></i></div>
+                    <div class="cert-title">Campus to Corporate Training</div>
+                    <div class="cert-issuer">Namal University Mianwali</div>
+                    <div class="education-time" style="margin-top:0.4rem;">May 2023</div>
+                </div>
             </div>
         </div>
     </section>
@@ -1449,11 +1565,11 @@ Let's connect if you're interested in leveraging advanced AI for impactful solut
                     <div style="display:flex; justify-content:center; gap:1.2rem; width:100%;">
                         <div class="contact-item">
                             <i class="fas fa-envelope"></i>
-                            <p>mwasim.ai20@gmai.com</p>
+                            <p>mwasim.ai20@gmail.com</p>
                         </div>
                         <div class="contact-item">
                             <i class="fas fa-map-marker-alt"></i>
-                            <p>Pakistan</p>
+                            <p>Hangu, KP (open to relocate)</p>
                         </div>
                     </div>
                     <div style="display:flex; justify-content:center; gap:1.2rem; width:100%;">
@@ -1471,8 +1587,47 @@ Let's connect if you're interested in leveraging advanced AI for impactful solut
         </div>
     </section>
 
-    <!-- Social Links and Quote directly after Contact Section -->
-    <div style="width:100vw; min-height:240px; height:40vh; max-height:400px; background:url('ai.jpeg') center center/cover no-repeat; margin:0; padding:0; display:block; display:none;"></div>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Muhammad Wasim</h3>
+                    <p class="footer-tagline">AI Engineer building speech, LLM, and multi-agent systems that hold up outside the notebook.</p>
+                    <div class="footer-socials">
+                        <a href="https://www.linkedin.com/in/muhammad-wasim-821b79202" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://github.com/WasimOkz" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="mailto:mwasim.ai20@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#experience">Experience</a></li>
+                        <li><a href="#projects">Projects</a></li>
+                        <li><a href="#skills">Skills</a></li>
+                        <li><a href="#education">Education</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Get In Touch</h3>
+                    <ul class="footer-links">
+                        <li><a href="mailto:mwasim.ai20@gmail.com">mwasim.ai20@gmail.com</a></li>
+                        <li><a href="tel:+923315427281">+92 331 5427281</a></li>
+                        <li>Hangu, KP (open to relocate)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear"></span> Muhammad Wasim. Built with curiosity and a bit of caffeine.</p>
+            </div>
+        </div>
+    </footer>
+
+    <button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0, behavior:'smooth'})" aria-label="Scroll to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
     <!-- Contact Modal (updated) -->
     <div id="contactModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center;">
@@ -1480,8 +1635,8 @@ Let's connect if you're interested in leveraging advanced AI for impactful solut
             <button onclick="closeContactModal()" style="position:absolute; top:1rem; right:1rem; background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer;">&times;</button>
             <h2 style="margin-bottom:1.5rem; text-align:center;">Contact Me</h2>
             <div style="display:flex; flex-direction:column; gap:1.5rem; width:100%; align-items:center;">
-                <a href="mailto:mwasim.ai20@gmai.com" style="width:100%; background:#23272b; color:#00d4ff; text-decoration:none; padding:1rem 2rem; border-radius:10px; font-size:1.1rem; display:flex; align-items:center; gap:1rem; justify-content:center; transition:background 0.2s;" onmouseover="this.style.background='#222'" onmouseout="this.style.background='#23272b'">
-                    <i class="fas fa-envelope"></i> Email: mwasim.ai20@gmai.com
+                <a href="mailto:mwasim.ai20@gmail.com" style="width:100%; background:#23272b; color:#00d4ff; text-decoration:none; padding:1rem 2rem; border-radius:10px; font-size:1.1rem; display:flex; align-items:center; gap:1rem; justify-content:center; transition:background 0.2s;" onmouseover="this.style.background='#222'" onmouseout="this.style.background='#23272b'">
+                    <i class="fas fa-envelope"></i> Email: mwasim.ai20@gmail.com
                 </a>
                 <a href="tel:+923315427281" style="width:100%; background:#23272b; color:#00d4ff; text-decoration:none; padding:1rem 2rem; border-radius:10px; font-size:1.1rem; display:flex; align-items:center; gap:1rem; justify-content:center; transition:background 0.2s;" onmouseover="this.style.background='#222'" onmouseout="this.style.background='#23272b'">
                     <i class="fas fa-phone"></i> Phone: +92 331 5427281
@@ -1499,6 +1654,69 @@ Let's connect if you're interested in leveraging advanced AI for impactful solut
     </div>
 
     <script>
+    // Theme toggle with persistence
+    function applyTheme(theme) {
+        if (theme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+            document.getElementById('themeIcon').className = 'fas fa-sun';
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+            document.getElementById('themeIcon').className = 'fas fa-moon';
+        }
+    }
+    function toggleTheme() {
+        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        const next = isLight ? 'dark' : 'light';
+        applyTheme(next);
+        try { localStorage.setItem('portfolio-theme', next); } catch (e) {}
+    }
+    (function initTheme() {
+        let saved = null;
+        try { saved = localStorage.getItem('portfolio-theme'); } catch (e) {}
+        if (saved) applyTheme(saved);
+    })();
+
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+        document.getElementById('navMenu').classList.toggle('active');
+        document.getElementById('mobileMenuBtn').classList.toggle('active');
+    }
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            document.getElementById('navMenu').classList.remove('active');
+            document.getElementById('mobileMenuBtn').classList.remove('active');
+        });
+    });
+
+    // Scroll-to-top button visibility
+    window.addEventListener('scroll', () => {
+        const btn = document.getElementById('scrollTopBtn');
+        if (window.scrollY > 400) btn.classList.add('visible');
+        else btn.classList.remove('visible');
+    });
+
+    // Footer year
+    const yearEl = document.getElementById('currentYear');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    // Reveal-on-scroll for cards
+    const revealTargets = document.querySelectorAll('.project-card, .experience-card, .skill-category, .cert-card');
+    revealTargets.forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(24px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    });
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15 });
+    revealTargets.forEach(el => revealObserver.observe(el));
+
     function openContactModal() {
         document.getElementById('contactModal').style.display = 'flex';
     }
